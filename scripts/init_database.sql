@@ -11,9 +11,6 @@
           - bronze : Raw, unprocessed data
           - silver : Cleaned, standardized, and lightly transformed data
           - gold   : Curated, business-ready data
-
-    Author     : [Your Name]
-    Date       : [YYYY-MM-DD]
 ****************************************************************************************************/
 
 -----------------------------------------
