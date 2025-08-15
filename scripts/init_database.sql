@@ -1,42 +1,37 @@
-/****************************************************************************************************
-    Script Name : Rebuild DataWarehouse Database and Schemas
-    Description :
-        This script will completely reset the 'DataWarehouse' database.
-        Steps:
-          1. Drop 'DataWarehouse' if it exists (⚠ Deletes all data inside).
-          2. Create a fresh 'DataWarehouse' database.
-          3. Create schemas: bronze, silver, gold.
+/*
+=============================================================
+Create Database and Schemas
+=============================================================
+Script Purpose:
+    This script creates a new database named 'DataWarehouse' after checking if it already exists. 
+    If the database exists, it is dropped and recreated. Additionally, the script sets up three schemas 
+    within the database: 'bronze', 'silver', and 'gold'.
+	
+WARNING:
+    Running this script will drop the entire 'DataWarehouse' database if it exists. 
+    All data in the database will be permanently deleted. Proceed with caution 
+    and ensure you have proper backups before running this script.
+*/
 
-        Schema Purpose (common in data lakehouse architecture):
-          - bronze : Raw, unprocessed data
-          - silver : Cleaned, standardized, and lightly transformed data
-          - gold   : Curated, business-ready data
-****************************************************************************************************/
-
------------------------------------------
--- 1. Drop Database if it Exists
------------------------------------------
-IF DB_ID(N'DataWarehouse') IS NOT NULL
-BEGIN
-    -- Ensure no connections block the drop
-    ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    DROP DATABASE DataWarehouse;
-END
+USE master;
 GO
 
------------------------------------------
--- 2. Create Fresh Database
------------------------------------------
+-- Drop and recreate the 'DataWarehouse' database
+IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouse')
+BEGIN
+    ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE DataWarehouse;
+END;
+GO
+
+-- Create the 'DataWarehouse' database
 CREATE DATABASE DataWarehouse;
 GO
 
--- Switch context to the new database
 USE DataWarehouse;
 GO
 
------------------------------------------
--- 3. Create Schemas
------------------------------------------
+-- Create Schemas
 CREATE SCHEMA bronze;
 GO
 
@@ -45,5 +40,3 @@ GO
 
 CREATE SCHEMA gold;
 GO
-
-PRINT 'DataWarehouse database and schemas created successfully.';
