@@ -1,5 +1,4 @@
 /*****************************************************************************************
- Script Name:     silver_tables_setup_ddl.sql
  Script Type:     DDL (Data Definition Language)
  Script Purpose:  This script sets up the 'silver' schema tables required for the data 
                   warehouse layer. It ensures a clean environment by dropping existing 
